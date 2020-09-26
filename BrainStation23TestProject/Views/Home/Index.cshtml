@@ -1,0 +1,74 @@
+﻿@model IEnumerable<BrainStation23TestProject.Models.Post>
+
+<section class="content">
+    <div class="row">
+        <div v class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Post List</h3>
+                </div>
+                <input class="pull-right" style="margin-bottom:2%" type="text" id="search" onkeyup="SearchFunction()" placeholder="Search Posts.." title="Type in a name">
+                <div class="box-body">
+                    <table id="PostTable" class="table table-bordered dataTable table-striped">
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td style="color:dodgerblue;width:60%">
+                                        @item.PostName
+                                    </td>
+                                    <td style="color:dodgerblue;width:10%">
+                                        Admin
+                                    </td>
+                                    <td style="color:dodgerblue;width:10%">
+                                        @item.PostedDate.ToString("dd/MMM/yyyy")
+                                    </td>
+                                    <td style="color:dodgerblue;width:20%">
+                                        @item.totalCmntCount Comments
+                                    </td>
+                                </tr>
+                                foreach (var cmnt in item.comments)
+                                {
+                                    <tr>
+                                        <td style="font:bold;padding-left:2% !important">
+                                            <strong>@cmnt.Comments</strong> 
+                                        </td>
+                                        <td>
+                                            @cmnt.User.UserName
+                                        </td>
+                                        <td>
+                                            @cmnt.CreateDate.Value.ToString("dd/MMM/yyyy")
+                                        </td>
+                                        <td>
+                                            <i class="glyphicon glyphicon-chevron-up" style="color:dodgerblue" ></i> @cmnt.Like  &nbsp  &nbsp <i class="glyphicon glyphicon-chevron-down" style="color:firebrick"></i> @cmnt.Dislike
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function SearchFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("PostTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
